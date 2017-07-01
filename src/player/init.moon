@@ -12,6 +12,7 @@ make = (x, y, z) ->
     .h = 24
 
     .acc      = 20
+    .stdacc   = acc
     .frcx     = 0.12
     .frcy     = 2
     .dx       = 0
@@ -23,10 +24,13 @@ make = (x, y, z) ->
     .airmul   = 0.75
 
   player.update = (dt) =>
+    -- Clear flags
     @grounded = false
+    @fast = false
 
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
 
+    -- Resolve collisions
     for c in *@collisions
       if c.normal.y ~= 0
         if c.normal.y == -1
@@ -34,6 +38,11 @@ make = (x, y, z) ->
         @dy = 0
       if c.normal.x ~= 0
         @dx = 0
+      
+      if fast
+        acc = stdacc * 2
+      else
+        acc = stdacc
 
       game\tag_check c.other.tags, c.other, @ if c.other.tags
       if c.other.settings
@@ -105,6 +114,9 @@ make = (x, y, z) ->
       if key == "space" 
         @dy = 0
   
+  player.makefast = =>
+    @fast = true
+
   player
 
 {
