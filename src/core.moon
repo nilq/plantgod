@@ -16,12 +16,12 @@ game.load = =>
 
   level.load "res/level.png"
 
-game.tag_check = (tags, a) =>
+game.tag_check = (tags, a, ...) =>
   for tag in *tags
     if a["on_" .. tag]
-      a["on_" .. tag] a
+      a["on_" .. tag] a, ...
     elseif a.settings["on_" .. tag]
-      a.settings["on_" .. tag] a
+      a.settings["on_" .. tag] a, ...
     else
       error "undefined trigger!!! >:("
 
@@ -60,12 +60,14 @@ game.draw = =>
     thing\draw! if thing.draw
 
   @mixer\draw!
-  
+
   with love.graphics
     .setColor 100, 100, 100
     .print "#{love.timer.getFPS!}FPS\n#{(string.format "%.4f", love.timer.getDelta!)}dt", 10, 10, 0, 5, 5
 
 game.press = (key) =>
+  if key == "r"
+    game\load!
   for thing in *@things
     continue unless thing
     thing\press key if thing.press

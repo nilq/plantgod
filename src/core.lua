@@ -13,13 +13,13 @@ game.load = function(self)
   self.camera = camera.make(0, 0, 1, 1, 0)
   return level.load("res/level.png")
 end
-game.tag_check = function(self, tags, a)
+game.tag_check = function(self, tags, a, ...)
   for _index_0 = 1, #tags do
     local tag = tags[_index_0]
     if a["on_" .. tag] then
-      a["on_" .. tag](a)
+      a["on_" .. tag](a, ...)
     elseif a.settings["on_" .. tag] then
-      a.settings["on_" .. tag](a)
+      a.settings["on_" .. tag](a, ...)
     else
       error("undefined trigger!!! >:(")
     end
@@ -128,6 +128,9 @@ game.draw = function(self)
   end
 end
 game.press = function(self, key)
+  if key == "r" then
+    game:load()
+  end
   local _list_0 = self.things
   for _index_0 = 1, #_list_0 do
     local _continue_0 = false

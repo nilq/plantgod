@@ -28,9 +28,9 @@ make = (x, y, z) ->
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
 
     for c in *@collisions
-      game\tag_check c.other.tags, c.other if c.other.tags
+      game\tag_check c.other.tags, c.other, @ if c.other.tags
       if c.other.settings
-        game\tag_check c.other.settings.tags, c.other if c.other.settings.tags
+        game\tag_check c.other.settings.tags, c.other, @ if c.other.settings.tags
 
       if c.normal.y ~= 0
         if c.normal.y == -1
@@ -59,7 +59,7 @@ make = (x, y, z) ->
       @dx -= (@dx / @frcx) * dt
     else
       @dx -= (@dx / @frcy) * dt
-      
+
     @dy -= (@dy / @frcy) * dt
 
     @dy += @gravity * dt

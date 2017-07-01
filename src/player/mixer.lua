@@ -9,7 +9,8 @@ make = function(slots, x, z)
       ["down"] = -2
     },
     combinations = {
-      skunk = "-1, 2, -1, -2"
+      skunk = "-1, 2, -1, -2",
+      shrub = "-1, -1, -1, -1"
     }
   }
   do

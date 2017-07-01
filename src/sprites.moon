@@ -8,5 +8,6 @@ with love.graphics
 
     plants: {
       skunk: .newImage "res/Plants/W33d.png"
+      shrub: .newImage "res/Plants/BouncyShrub.png"
     }
   }

@@ -98,9 +98,22 @@ local skunk = {
     return game:remove(self)
   end
 }
+local shrub = {
+  name = "shrub",
+  w = 24,
+  h = 24,
+  touchable = true,
+  tags = {
+    "touch"
+  },
+  on_touch = function(self, player)
+    player.dy = -10
+  end
+}
 return {
   make = make,
   settings = {
-    skunk = skunk
+    skunk = skunk,
+    shrub = shrub
   }
 }

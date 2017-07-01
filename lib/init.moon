@@ -5,16 +5,16 @@ export shine = require "lib/shine"
 export bump  = require "lib/bump"
 export world = bump.newWorld!
 
+export post_effect = shine.scanlines!\chain (shine.crt!\set "x", 0.04)\set "y", 0.045
+
 with love
   .graphics.setBackgroundColor 255, 255, 255
-
-  export post_effect = shine.scanlines!\chain (shine.crt!\set "x", 0.04)\set "y", 0.045
 
   .run = ->
     dt = 0
 
     update_time  = 0
-    target_delta = 1 / 1000
+    target_delta = 1 / 120
 
     .math.setRandomSeed os.time! if .math
     .load!                       if .load
@@ -40,7 +40,9 @@ with love
         dt = .timer.getDelta!
       
       if update_time > target_delta
-        state\update dt
+        state\update update_time
+        print update_time
+        update_time = 0
       
       if .graphics and .graphics.isActive!
         .graphics.clear .graphics.getBackgroundColor!

@@ -88,9 +88,20 @@ skunk = {
     game\remove  @
 }
 
+shrub = {
+  name: "shrub"
+  w: 24
+  h: 24
+  touchable: true
+  tags: {"touch"}
+  on_touch: (player) =>
+    player.dy = -10
+}
+
 {
   :make
   settings: {
     :skunk
+    :shrub
   }
 }

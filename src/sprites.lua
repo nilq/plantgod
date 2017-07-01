@@ -7,7 +7,8 @@ do
       sand = _with_0.newImage("res/Textures/Sand.png")
     },
     plants = {
-      skunk = _with_0.newImage("res/Plants/W33d.png")
+      skunk = _with_0.newImage("res/Plants/W33d.png"),
+      shrub = _with_0.newImage("res/Plants/BouncyShrub.png")
     }
   }
 end

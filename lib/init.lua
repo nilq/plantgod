@@ -3,14 +3,14 @@ util = require("lib/util")
 shine = require("lib/shine")
 bump = require("lib/bump")
 world = bump.newWorld()
+post_effect = shine.scanlines():chain((shine.crt():set("x", 0.04)):set("y", 0.045))
 do
   local _with_0 = love
   _with_0.graphics.setBackgroundColor(255, 255, 255)
-  post_effect = shine.scanlines():chain((shine.crt():set("x", 0.04)):set("y", 0.045))
   _with_0.run = function()
     local dt = 0
     local update_time = 0
-    local target_delta = 1 / 1000
+    local target_delta = 1 / 120
     if _with_0.math then
       _with_0.math.setRandomSeed(os.time())
     end
@@ -40,7 +40,9 @@ do
         dt = _with_0.timer.getDelta()
       end
       if update_time > target_delta then
-        state:update(dt)
+        state:update(update_time)
+        print(update_time)
+        update_time = 0
       end
       if _with_0.graphics and _with_0.graphics.isActive() then
         _with_0.graphics.clear(_with_0.graphics.getBackgroundColor())

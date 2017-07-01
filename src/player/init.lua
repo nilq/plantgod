@@ -27,11 +27,11 @@ make = function(x, y, z)
     for _index_0 = 1, #_list_0 do
       local c = _list_0[_index_0]
       if c.other.tags then
-        game:tag_check(c.other.tags, c.other)
+        game:tag_check(c.other.tags, c.other, self)
       end
       if c.other.settings then
         if c.other.settings.tags then
-          game:tag_check(c.other.settings.tags, c.other)
+          game:tag_check(c.other.settings.tags, c.other, self)
         end
       end
       if c.normal.y ~= 0 then
