@@ -26,6 +26,9 @@ make = function(x, y, z, settings)
       if self.seed then
         self:grow()
       end
+      if self.settings.collide then
+        self.settings:collide(c)
+      end
       if c.normal.y ~= 0 then
         if c.normal.y == -1 then
           self.grounded = true
@@ -34,6 +37,14 @@ make = function(x, y, z, settings)
       end
       if c.normal.x ~= 0 then
         self.dx = 0
+      end
+      if c.other.tags then
+        game:tag_check(c.other.tags, c.other, self)
+      end
+      if c.other.settings then
+        if c.other.settings.tags then
+          game:tag_check(c.other.settings.tags, c.other, self)
+        end
       end
     end
     if self.grounded then
@@ -106,8 +117,9 @@ local shrub = {
   tags = {
     "touch"
   },
-  on_touch = function(self, player)
-    player.dy = -10
+  on_touch = function(self, c)
+    c.pos[2] = c.pos[2] - 1
+    c.dy = -15
   end
 }
 return {

@@ -41,7 +41,6 @@ do
       end
       if update_time > target_delta then
         state:update(update_time)
-        print(update_time)
         update_time = 0
       end
       if _with_0.graphics and _with_0.graphics.isActive() then

@@ -11,6 +11,11 @@ game.load = function(self)
   self.thingsb = { }
   self.players = { }
   self.camera = camera.make(0, 0, 1, 1, 0)
+  local items = world:getItems()
+  for _index_0 = 1, #items do
+    local item = items[_index_0]
+    world:remove(item)
+  end
   return level.load("res/level.png")
 end
 game.tag_check = function(self, tags, a, ...)
@@ -83,17 +88,17 @@ game.draw = function(self)
       break
     end
   end
-  local _list_1 = self.thingsb
+  local _list_1 = self.things
   for _index_0 = 1, #_list_1 do
     local _continue_0 = false
     repeat
-      local thingb = _list_1[_index_0]
-      if not (thingb) then
+      local thing = _list_1[_index_0]
+      if not (thing) then
         _continue_0 = true
         break
       end
-      if thingb.draw then
-        thingb:draw()
+      if thing.draw then
+        thing:draw()
       end
       _continue_0 = true
     until true
@@ -101,17 +106,17 @@ game.draw = function(self)
       break
     end
   end
-  local _list_2 = self.things
+  local _list_2 = self.thingsb
   for _index_0 = 1, #_list_2 do
     local _continue_0 = false
     repeat
-      local thing = _list_2[_index_0]
-      if not (thing) then
+      local thingb = _list_2[_index_0]
+      if not (thingb) then
         _continue_0 = true
         break
       end
-      if thing.draw then
-        thing:draw()
+      if thingb.draw then
+        thingb:draw()
       end
       _continue_0 = true
     until true

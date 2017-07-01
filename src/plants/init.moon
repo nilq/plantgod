@@ -26,6 +26,8 @@ make = (x, y, z, settings) ->
     for c in *@collisions
       if @seed
         @grow!
+
+      @settings\collide c if @settings.collide
         
       if c.normal.y ~= 0
         if c.normal.y == -1
@@ -33,6 +35,10 @@ make = (x, y, z, settings) ->
         @dy = 0
       if c.normal.x ~= 0
         @dx = 0
+
+      game\tag_check c.other.tags, c.other, @ if c.other.tags
+      if c.other.settings
+        game\tag_check c.other.settings.tags, c.other, @ if c.other.settings.tags
 
     if @grounded
       @dx -= (@dx / @frcx) * dt
@@ -94,8 +100,9 @@ shrub = {
   h: 24
   touchable: true
   tags: {"touch"}
-  on_touch: (player) =>
-    player.dy = -10
+  on_touch: (c) =>
+    c.pos[2] -= 1
+    c.dy      = -15
 }
 
 {

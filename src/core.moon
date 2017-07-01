@@ -14,6 +14,11 @@ game.load = =>
   @players = {}
   @camera  = camera.make 0, 0, 1, 1, 0
 
+  items = world\getItems!
+
+  for item in *items
+    world\remove item
+
   level.load "res/level.png"
 
 game.tag_check = (tags, a, ...) =>
@@ -51,13 +56,13 @@ game.draw = =>
     continue unless thingb
     thingb\drawb! if thingb.drawb
 
-  for thingb in *@thingsb
-    continue unless thingb
-    thingb\draw! if thingb.draw
-
   for thing in *@things
     continue unless thing
     thing\draw! if thing.draw
+
+  for thingb in *@thingsb
+    continue unless thingb
+    thingb\draw! if thingb.draw
 
   @mixer\draw!
 

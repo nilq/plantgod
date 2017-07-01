@@ -41,7 +41,6 @@ with love
       
       if update_time > target_delta
         state\update update_time
-        print update_time
         update_time = 0
       
       if .graphics and .graphics.isActive!

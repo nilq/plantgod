@@ -7,33 +7,26 @@ make = function(x, y, z)
       [3] = z
     }
   }
-  player.w = 24
-  player.h = 24
-  player.acc = 20
-  player.frcx = 0.12
-  player.frcy = 2
-  player.dx = 0
-  player.dy = 0
-  player.grounded = false
-  player.gravity = 25
-  player.jump = 8
-  player.jumped = false
-  player.airmul = 0.75
-  player.followed = true
+  do
+    player.w = 24
+    player.h = 24
+    player.acc = 20
+    player.frcx = 0.12
+    player.frcy = 2
+    player.dx = 0
+    player.dy = 0
+    player.grounded = false
+    player.gravity = 25
+    player.jump = 8
+    player.jumped = false
+    player.airmul = 0.75
+  end
   player.update = function(self, dt)
     self.grounded = false
     self.pos[1], self.pos[2], self.collisions = world:move(self, self.pos[1] + self.dx, self.pos[2] + self.dy)
     local _list_0 = self.collisions
     for _index_0 = 1, #_list_0 do
       local c = _list_0[_index_0]
-      if c.other.tags then
-        game:tag_check(c.other.tags, c.other, self)
-      end
-      if c.other.settings then
-        if c.other.settings.tags then
-          game:tag_check(c.other.settings.tags, c.other, self)
-        end
-      end
       if c.normal.y ~= 0 then
         if c.normal.y == -1 then
           self.grounded = true
@@ -42,6 +35,14 @@ make = function(x, y, z)
       end
       if c.normal.x ~= 0 then
         self.dx = 0
+      end
+      if c.other.tags then
+        game:tag_check(c.other.tags, c.other, self)
+      end
+      if c.other.settings then
+        if c.other.settings.tags then
+          game:tag_check(c.other.settings.tags, c.other, self)
+        end
       end
     end
     do
