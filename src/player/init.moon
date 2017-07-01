@@ -7,20 +7,20 @@ make = (x, y, z) ->
     }
   }
 
-  player.w = 24
-  player.h = 24
-
-  player.acc      = 20
-  player.frcx     = 0.12
-  player.frcy     = 2
-  player.dx       = 0
-  player.dy       = 0
-  player.grounded = false
-  player.gravity  = 25
-  player.jump     = 8
-  player.jumped   = false
-  player.airmul   = 0.75
-  player.followed = true
+  with player
+    .w = 24
+    .h = 24
+    
+    .acc      = 20
+    .frcx     = 0.12
+    .frcy     = 2
+    .dx       = 0
+    .dy       = 0
+    .grounded = false
+    .gravity  = 25
+    .jump     = 8
+    .jumped   = false
+    .airmul   = 0.75
 
   player.update = (dt) =>
     @grounded = false
