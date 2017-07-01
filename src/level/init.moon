@@ -19,7 +19,6 @@ with level
     image = love.image.newImageData path
 
     for x = 1, image\getWidth!
-      row = {}
       for y = 1, image\getHeight!
 
         rx, ry = x - 1, y - 1

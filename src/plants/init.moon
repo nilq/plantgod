@@ -106,10 +106,20 @@ shrub = {
     c.dy      = -12
 }
 
+grass = {
+  name: "grass"
+  w: 24
+  h: 6
+  tags: {"walk"}
+  on_walk: (a) => 
+    a\make_fast!  if a.make_fast
+}
+
 {
   :make
   settings: {
     :skunk
     :shrub
+    :grass
   }
 }
