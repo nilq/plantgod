@@ -6,7 +6,6 @@ export bump  = require "lib/bump"
 export world = bump.newWorld!
 
 with love
-  .graphics.setDefaultFilter "nearest", "nearest"
   .graphics.setBackgroundColor 255, 255, 255
 
   export post_effect = shine.scanlines!\chain (shine.crt!\set "x", 0.04)\set "y", 0.045
@@ -15,7 +14,7 @@ with love
     dt = 0
 
     update_time  = 0
-    target_delta = 1 / 60
+    target_delta = 1 / 1000
 
     .math.setRandomSeed os.time! if .math
     .load!                       if .load

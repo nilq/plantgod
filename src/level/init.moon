@@ -1,7 +1,8 @@
 level = {
-  grid_size: 20
+  grid_size: 24
   default: {
     "dirt":  {0, 0, 0}
+    "stone": {81, 81, 81}
     "god":   {255, 255, 0}
     "skunk": {0, 200, 0}
   }
@@ -31,27 +32,24 @@ with level
   .make_entity = (k, x, y) ->
     switch k
       when "god"
-        a = player.make x, y, game.z
+        a = player.make x, y, game.z - 5
         game\spawn a
         world\add a, a.pos[1], a.pos[2], a.w, a.h
-      
+
+        game.players[#game.players + 1] = a
+
       when "dirt"
-        a = block.make x, y, game.z
-        game\spawn a
+        a = block.make x, y, game.z, k
+        game\spawn_back a
+        world\add a, a.pos[1], a.pos[2], a.w, a.h
+
+      when "stone"
+        a = block.make x, y, game.z, k
+        game\spawn_back a
         world\add a, a.pos[1], a.pos[2], a.w, a.h
       
       when "skunk"
-        a = plants.make x, y, game.z, {
-          w: 8
-          h: 25
-          touchable: true
-          tags: {"pick"}
-          on_pick: =>
-            game.camera.r += util.randf -.5, .5
-
-            world\remove @
-            game\remove  @
-        }
+        a = plants.make x, y, game.z - 5, plants.settings.skunk
         game\spawn a
 
 level
