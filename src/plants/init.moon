@@ -66,6 +66,21 @@ make = (x, y, z, settings) ->
 
   plant
 
+skunk = {
+  w: 8
+  h: 25
+  touchable: true
+  tags: {"pick"}
+  on_pick: =>
+    game.camera.r += util.randf -.5, .5
+
+    world\remove @
+    game\remove  @
+}
+
 {
   :make
+  settings: {
+    :skunk
+  }
 }

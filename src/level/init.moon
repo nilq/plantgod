@@ -34,6 +34,8 @@ with level
         a = player.make x, y, game.z
         game\spawn a
         world\add a, a.pos[1], a.pos[2], a.w, a.h
+
+        game.players[#game.players + 1] = a
       
       when "dirt"
         a = block.make x, y, game.z
@@ -41,17 +43,7 @@ with level
         world\add a, a.pos[1], a.pos[2], a.w, a.h
       
       when "skunk"
-        a = plants.make x, y, game.z, {
-          w: 8
-          h: 25
-          touchable: true
-          tags: {"pick"}
-          on_pick: =>
-            game.camera.r += util.randf -.5, .5
-
-            world\remove @
-            game\remove  @
-        }
+        a = plants.make x, y, game.z, plants.settings.skunk
         game\spawn a
 
 level

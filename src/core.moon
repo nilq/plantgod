@@ -5,10 +5,11 @@ level  = require "src/level"
 camera = require "src/camera"
 
 game.load = =>
-  game.z      = -1000
-  game.mixer  = mixer.make 4, 100, game.z
-  game.things = {}
-  game.camera = camera.make 0, 0, 1, 1, 0
+  game.z       = -1000
+  game.mixer   = mixer.make 4, 100, game.z
+  game.things  = {}
+  game.players = {}
+  game.camera  = camera.make 0, 0, 1, 1, 0
 
   level.load "res/level.png"
 
