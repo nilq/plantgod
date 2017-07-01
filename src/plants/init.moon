@@ -43,9 +43,18 @@ make = (x, y, z, settings) ->
     @dy += @gravity * dt
 
   plant.draw = =>
+    @draw_pos = {
+      game.x + @pos[1]
+      game.y + @pos[2]
+      @pos[3]
+    }
     with projection.graphics
-      love.graphics.setColor 100, 255, 100
-      .square3d fov, "fill", @pos, @w, @h
+      if @seed
+        love.graphics.setColor 100, 255, 100
+        .square3d fov, "fill", @draw_pos, @w, @h
+      else
+        love.graphics.setColor 255, 255, 255
+        .draw fov, sprites.plants[@settings.name], @draw_pos, 0, 1.5, 1.5
 
   plant.grow = (settings=@settings) =>
     unless settings.touchable
@@ -67,8 +76,9 @@ make = (x, y, z, settings) ->
   plant
 
 skunk = {
-  w: 8
-  h: 25
+  name: "skunk"
+  w: 24
+  h: 24
   touchable: true
   tags: {"pick"}
   on_pick: =>

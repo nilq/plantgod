@@ -45,6 +45,13 @@ print = (fov, msg, p1) ->
   with love.graphics
     .print msg, pn1[1] * s1, pn1[2] * s1, 0, s1, s1
 
+-- drawable on point
+draw = (fov, img, p1, r=0, sx=1, sy=1) ->
+  pn1, s1 = projectn 2, fov, p1
+
+  with love.graphics
+    .draw img, pn1[1] * s1, pn1[2] * s1, r, s1 * sx, s1 * sy
+
 -- triangle draws a 2d triangle between given arbitray dimensional points
 -- number -> string -> table -> table -> table -> nil
 triangle = (fov, mode, p1, p2, p3) ->
@@ -118,6 +125,7 @@ cube = (fov, mode, p1, width, height, depth) ->
     :square3v
     :square3d
     :cube
+    :draw
     :print
   }
 }

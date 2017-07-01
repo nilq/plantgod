@@ -1,4 +1,11 @@
-make = (x, y, z) ->
+color = {
+  dirt:  {111, 63, 20}
+  sand:  {189, 197, 150}
+  bark:  {100, 52, 34}
+  stone: {81, 81, 81}
+}
+
+make = (x, y, z, name) ->
   block = {
     pos: {
       [1]: x
@@ -7,16 +14,30 @@ make = (x, y, z) ->
     }
   }
 
-  block.w = 20
-  block.h = 20
+  block.w = 24
+  block.h = 24
 
   block.draw = =>
-    with projection.graphics
-      love.graphics.setColor 200, 200, 200
-      .square3d fov, "fill", @pos, @w, @h
+    @draw_pos = {
+      game.x + @pos[1]
+      game.y + @pos[2]
+      @pos[3]
+    }
 
-      love.graphics.setColor 150, 150, 150
-      .square3d fov, "line", @pos, @w, @h
+    with projection.graphics
+      love.graphics.setColor 255, 255, 255
+      .draw fov, sprites.textures[name], {@draw_pos[1], @draw_pos[2], @draw_pos[3] - 20}, 0, 3.1, 3.1
+
+  block.drawb = =>
+    @draw_pos = {
+      game.x + @pos[1]
+      game.y + @pos[2]
+      @pos[3]
+    }
+
+    with projection.graphics
+      love.graphics.setColor color[name]
+      .cube fov, "fill", {@draw_pos[1], @draw_pos[2] + @h, @draw_pos[3] - @w}, @w, @h, 10
 
   block
 

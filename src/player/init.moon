@@ -7,8 +7,8 @@ make = (x, y, z) ->
     }
   }
 
-  player.w = 20
-  player.h = 20
+  player.w = 24
+  player.h = 24
 
   player.acc      = 20
   player.frcx     = 0.12
@@ -75,18 +75,23 @@ make = (x, y, z) ->
     }
 
   player.camera_follow = (t) =>
-    real_pos = @get_real!
-    with game.camera
-      .pos[1] = util.lerp .pos[1], real_pos[1], t
-      .pos[2] = util.lerp .pos[2], real_pos[2], t
+    real_pos = @pos
+    with game
+      .x = util.lerp .x, -real_pos[1] + love.graphics.getWidth! / 4, t
+      .y = util.lerp .y, -real_pos[2] + love.graphics.getHeight! / 4, t / 2
 
   player.draw = =>
+    @draw_pos = {
+      game.x + @pos[1]
+      game.y + @pos[2]
+      @pos[3]
+    }
     with projection.graphics
       love.graphics.setColor 200, 255, 200
-      .square3d fov, "fill", @pos, @w, @h
+      .square3d fov, "fill", @draw_pos, @w, @h
 
       love.graphics.setColor 150, 150, 150
-      .square3d fov, "line", @pos, @w, @h
+      .square3d fov, "line", @draw_pos, @w, @h
 
   player.press = (key) =>
     if @grounded
