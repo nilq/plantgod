@@ -20,6 +20,7 @@ make = (x, y, z) ->
   player.jump     = 8
   player.jumped   = false
   player.airmul   = 0.75
+  player.followed = true
 
   player.update = (dt) =>
     @grounded = false

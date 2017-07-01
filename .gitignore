@@ -1,2 +1,4 @@
 *.lua
 !bump.lua
+!shine
+!lib/shine
