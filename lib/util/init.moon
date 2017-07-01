@@ -41,6 +41,9 @@ randn = (mu, sigma) ->
 distance = (a, b) ->
   math.sqrt (a[1] - b[1])^2 + (a[2] - b[2])^2
 
+lerp = (a, b, t) ->
+  a + (b - a) * t
+
 cap = (n) ->
   if n < 0
     return 0
@@ -56,4 +59,5 @@ cap = (n) ->
   :randn
   :cap
   :distance
+  :lerp
 }

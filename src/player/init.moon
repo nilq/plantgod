@@ -10,8 +10,8 @@ make = (x, y, z) ->
   player.w = 20
   player.h = 20
 
-  player.acc      = 10
-  player.frcx     = 0.5
+  player.acc      = 15
+  player.frcx     = 0.12
   player.frcy     = 2
   player.dx       = 0
   player.dy       = 0
@@ -33,13 +33,6 @@ make = (x, y, z) ->
         unless @grounded
           @dy -= dt * @gravity / 40
 
-    if @grounded
-      @dx -= (@dx / @frcx) * dt
-    else
-      @dx -= (@dx / @frcy) * dt
-      
-    @dy -= (@dy / @frcy) * dt
-
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
 
     for c in *@collisions
@@ -50,9 +43,31 @@ make = (x, y, z) ->
       if c.normal.x ~= 0
         @dx = 0
 
+    if @grounded
+      @dx -= (@dx / @frcx) * dt
+    else
+      @dx -= (@dx / @frcy) * dt
+      
+    @dy -= (@dy / @frcy) * dt
+
     @dy += @gravity * dt
 
     @jumped = false if @dy >= 0
+
+    @camera_follow dt * 4
+
+  player.get_real = =>
+    point, scale = projection.projectn 2, fov, @pos
+    {
+      point[1] * scale
+      point[2] * scale
+    }
+  
+  player.camera_follow = (t) =>
+    real_pos = @get_real!
+    with game.camera
+      .pos[1] = util.lerp .pos[1], real_pos[1], t
+      .pos[2] = util.lerp .pos[2], real_pos[2], t
 
   player.draw = =>
     with projection.graphics
