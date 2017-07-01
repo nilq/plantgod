@@ -5,7 +5,7 @@ export shine = require "lib/shine"
 export bump  = require "lib/bump"
 export world = bump.newWorld!
 
-export post_effect = shine.scanlines!\chain (shine.crt!\set "x", 0.04)\set "y", 0.045
+export post_effect = shine.scanlines!\chain (shine.crt!\set "x", 0.05)\set "y", 0.055
 
 with love
   .graphics.setBackgroundColor 255, 255, 255

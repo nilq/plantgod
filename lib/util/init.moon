@@ -44,6 +44,13 @@ distance = (a, b) ->
 lerp = (a, b, t) ->
   a + (b - a) * t
 
+sign = (n) ->
+  if n < 0
+    return -1
+  if n > 0
+    return 1
+  0
+
 cap = (n) ->
   if n < 0
     return 0
@@ -60,4 +67,5 @@ cap = (n) ->
   :cap
   :distance
   :lerp
+  :sign
 }

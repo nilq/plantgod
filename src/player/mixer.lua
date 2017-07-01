@@ -61,7 +61,8 @@ make = function(slots, x, z)
           if v0 == v then
             local setting = plants.settings[k]
             local a = plants.make(p.pos[1] + p.w / 2 - setting.w / 2, p.pos[2] - p.h * 1.5, game.z, setting)
-            a.dy = p.dy - 10
+            a.dy = p.dy * 2.25
+            a.dx = p.dx * 1.5
             game:spawn(a)
             break
           end

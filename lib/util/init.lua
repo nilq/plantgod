@@ -49,6 +49,16 @@ local lerp
 lerp = function(a, b, t)
   return a + (b - a) * t
 end
+local sign
+sign = function(n)
+  if n < 0 then
+    return -1
+  end
+  if n > 0 then
+    return 1
+  end
+  return 0
+end
 local cap
 cap = function(n)
   if n < 0 then
@@ -67,5 +77,6 @@ return {
   randn = randn,
   cap = cap,
   distance = distance,
-  lerp = lerp
+  lerp = lerp,
+  sign = sign
 }

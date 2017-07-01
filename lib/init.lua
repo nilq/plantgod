@@ -3,7 +3,7 @@ util = require("lib/util")
 shine = require("lib/shine")
 bump = require("lib/bump")
 world = bump.newWorld()
-post_effect = shine.scanlines():chain((shine.crt():set("x", 0.04)):set("y", 0.045))
+post_effect = shine.scanlines():chain((shine.crt():set("x", 0.05)):set("y", 0.055))
 do
   local _with_0 = love
   _with_0.graphics.setBackgroundColor(255, 255, 255)

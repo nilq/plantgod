@@ -23,12 +23,6 @@ make = function(x, y, z, settings)
     local _list_0 = self.collisions
     for _index_0 = 1, #_list_0 do
       local c = _list_0[_index_0]
-      if self.seed then
-        self:grow()
-      end
-      if self.settings.collide then
-        self.settings:collide(c)
-      end
       if c.normal.y ~= 0 then
         if c.normal.y == -1 then
           self.grounded = true
@@ -37,6 +31,12 @@ make = function(x, y, z, settings)
       end
       if c.normal.x ~= 0 then
         self.dx = 0
+      end
+      if self.seed then
+        self:grow()
+      end
+      if self.settings.collide then
+        self.settings:collide(c)
       end
       if c.other.tags then
         game:tag_check(c.other.tags, c.other, self)
@@ -68,7 +68,7 @@ make = function(x, y, z, settings)
         _with_0.square3d(fov, "fill", self.draw_pos, self.w, self.h)
       else
         love.graphics.setColor(255, 255, 255)
-        _with_0.draw(fov, sprites.plants[self.settings.name], self.draw_pos, 0, 1.5, 1.5)
+        _with_0.draw(fov, sprites.plants[self.settings.name], self.draw_pos, 0, 1.6, 1.6)
       end
       return _with_0
     end
@@ -90,6 +90,8 @@ make = function(x, y, z, settings)
     self.settings = settings
     self.w = settings.w
     self.h = settings.h
+    self.dx = 0
+    self.dy = 0
     self.seed = false
   end
   world:add(plant, plant.pos[1], plant.pos[2], plant.w, plant.h)

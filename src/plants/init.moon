@@ -24,17 +24,17 @@ make = (x, y, z, settings) ->
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
 
     for c in *@collisions
-      if @seed
-        @grow!
-
-      @settings\collide c if @settings.collide
-        
       if c.normal.y ~= 0
         if c.normal.y == -1
           @grounded = true
         @dy = 0
       if c.normal.x ~= 0
         @dx = 0
+
+      if @seed
+        @grow!
+
+      @settings\collide c if @settings.collide
 
       game\tag_check c.other.tags, c.other, @ if c.other.tags
       if c.other.settings
@@ -60,7 +60,7 @@ make = (x, y, z, settings) ->
         .square3d fov, "fill", @draw_pos, @w, @h
       else
         love.graphics.setColor 255, 255, 255
-        .draw fov, sprites.plants[@settings.name], @draw_pos, 0, 1.5, 1.5
+        .draw fov, sprites.plants[@settings.name], @draw_pos, 0, 1.6, 1.6
 
   plant.grow = (settings=@settings) =>
     unless settings.touchable
@@ -75,6 +75,8 @@ make = (x, y, z, settings) ->
 
     @w    = settings.w
     @h    = settings.h
+    @dx   = 0
+    @dy   = 0
     @seed = false
 
   world\add plant, plant.pos[1], plant.pos[2], plant.w, plant.h
