@@ -115,7 +115,7 @@ berry = {
   touchable: true
   tags: {"grab"}
   on_grab: (a) => 
-    a.attatched = true
+    a.attatched = -1
 }
 
 {

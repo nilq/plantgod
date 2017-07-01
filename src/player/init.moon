@@ -22,11 +22,10 @@ make = (x, y, z) ->
     .jump     = 8
     .jumped   = false
     .airmul   = 0.75
+    .attatched = 0
 
   player.update = (dt) =>
-    -- Clear flags
     @grounded = false
-    @fast = false
 
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
 
@@ -38,17 +37,13 @@ make = (x, y, z) ->
         @dy = 0
       if c.normal.x ~= 0
         @dx = 0
-      
-      if fast
-        acc = stdacc * 2
-      else
-        acc = stdacc
 
       game\tag_check c.other.tags, c.other, @ if c.other.tags
       if c.other.settings
         game\tag_check c.other.settings.tags, c.other, @ if c.other.settings.tags
 
     with love.keyboard
+      if attatched
       if .isDown "d"
         if @grounded
           @dx += @acc * dt
@@ -113,9 +108,6 @@ make = (x, y, z) ->
     if @jumped
       if key == "space" 
         @dy = 0
-  
-  player.makefast = =>
-    @fast = true
 
   player
 
