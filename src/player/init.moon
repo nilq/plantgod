@@ -43,21 +43,34 @@ make = (x, y, z) ->
         game\tag_check c.other.settings.tags, c.other, @ if c.other.settings.tags
 
     with love.keyboard
-      if attatched
-      if .isDown "d"
-        if @grounded
-          @dx += @acc * dt
-        else
-          @dx += @airmul * @acc * dt
-      if .isDown "a"
-        if @grounded
-          @dx -= @acc * dt
-        else
-          @dx -= @airmul * @acc * dt
-      
-      if .isDown "space"
-        unless @grounded
-          @dy -= dt * @gravity / 40
+      if @attatched == 0
+        if .isDown "d"
+          if @grounded
+            @dx += @acc * dt
+          else
+            @dx += @airmul * @acc * dt
+        if .isDown "a"
+          if @grounded
+            @dx -= @acc * dt
+          else
+            @dx -= @airmul * @acc * dt
+        
+        if .isDown "space"
+          unless @grounded
+            @dy -= dt * @gravity / 40
+      else
+        @dx = 0
+        @dy = 0
+        if (.isDown "d") and @attatched == 1
+          @dx = 6
+          @attatched = 0
+        if (.isDown "a") and @attatched == -1
+          @dx = -6
+          @attatched = 0
+        if .isDown "space"
+          @dx = 6 * @attatched
+          @dy = -7
+          @attatched = 0
 
     if @grounded
       @dx -= (@dx / @frcx) * dt
@@ -66,7 +79,7 @@ make = (x, y, z) ->
 
     @dy -= (@dy / @frcy) * dt
 
-    @dy += @gravity * dt
+    @dy += @gravity * dt unless @attatched  ~= 0
 
     @jumped = false if @dy >= 0
 
