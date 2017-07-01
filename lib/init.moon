@@ -9,7 +9,7 @@ with love
   .graphics.setDefaultFilter "nearest", "nearest"
   .graphics.setBackgroundColor 255, 255, 255
 
-  post_effect = shine.scanlines!\chain (shine.crt!\set "x", 0.04)\set "y", 0.045
+  export post_effect = shine.scanlines!\chain (shine.crt!\set "x", 0.04)\set "y", 0.045
 
   .run = ->
     dt = 0
@@ -18,7 +18,7 @@ with love
     target_delta = 1 / 60
 
     .math.setRandomSeed os.time! if .math
-    .load !                      if .load
+    .load!                       if .load
     .timer.step!                 if .timer
 
     state\set "src/core"

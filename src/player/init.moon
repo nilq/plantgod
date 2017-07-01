@@ -10,8 +10,8 @@ make = (x, y, z) ->
   player.w = 20
   player.h = 20
 
-  player.acc      = 10
-  player.frcx     = 0.5
+  player.acc      = 20
+  player.frcx     = 0.12
   player.frcy     = 2
   player.dx       = 0
   player.dy       = 0
@@ -19,15 +19,36 @@ make = (x, y, z) ->
   player.gravity  = 25
   player.jump     = 8
   player.jumped   = false
+  player.airmul   = 0.75
 
   player.update = (dt) =>
     @grounded = false
-  
+
+    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
+
+    for c in *@collisions
+      game\tag_check c.other.tags, c.other if c.other.tags
+      if c.other.settings
+        game\tag_check c.other.settings.tags, c.other if c.other.settings.tags
+
+      if c.normal.y ~= 0
+        if c.normal.y == -1
+          @grounded = true
+        @dy = 0
+      if c.normal.x ~= 0
+        @dx = 0
+
     with love.keyboard
       if .isDown "d"
-        @dx += @acc * dt
+        if @grounded
+          @dx += @acc * dt
+        else
+          @dx += @airmul * @acc * dt
       if .isDown "a"
-        @dx -= @acc * dt
+        if @grounded
+          @dx -= @acc * dt
+        else
+          @dx -= @airmul * @acc * dt
       
       if .isDown "space"
         unless @grounded
@@ -40,19 +61,24 @@ make = (x, y, z) ->
       
     @dy -= (@dy / @frcy) * dt
 
-    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
-
-    for c in *@collisions
-      if c.normal.y ~= 0
-        if c.normal.y == -1
-          @grounded = true
-        @dy = 0
-      if c.normal.x ~= 0
-        @dx = 0
-
     @dy += @gravity * dt
 
     @jumped = false if @dy >= 0
+
+    @camera_follow dt * 4
+
+  player.get_real = =>
+    point, scale = projection.projectn 2, fov, @pos
+    {
+      point[1] * scale
+      point[2] * scale
+    }
+
+  player.camera_follow = (t) =>
+    real_pos = @get_real!
+    with game.camera
+      .pos[1] = util.lerp .pos[1], real_pos[1], t
+      .pos[2] = util.lerp .pos[2], real_pos[2], t
 
   player.draw = =>
     with projection.graphics
