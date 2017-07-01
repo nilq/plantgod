@@ -50,8 +50,8 @@ make = (x, y, z, settings) ->
 
   plant.draw = =>
     @draw_pos = {
-      game.x + @pos[1]
-      game.y + @pos[2]
+      game.x + @pos[1] + (@settings.ox or 0)
+      game.y + @pos[2] + (@settings.oy or 0)
       @pos[3]
     }
     with projection.graphics
@@ -107,13 +107,16 @@ shrub = {
     c.dy      = -15
 }
 
-grass = {
-  name: "grass"
-  w: 24
-  h: 6
-  tags: {"walk"}
-  on_walk: (a) => 
-    a\make_fast!  if a.make_fast
+berry = {
+  name: "berry"
+  w: 4
+  h: 24
+  ox: -20
+  oy: 0
+  touchable: true
+  tags: {"grab"}
+  on_grab: (a) => 
+    a.attatched = true
 }
 
 {
@@ -121,6 +124,6 @@ grass = {
   settings: {
     :skunk
     :shrub
-    :grass
+    :berry
   }
 }
