@@ -1,13 +1,16 @@
 level = {
   grid_size: 20
   default: {
-    "dirt": {0, 0, 0}
-    "god":  {255, 255, 0}
+    "dirt":  {0, 0, 0}
+    "god":   {255, 255, 0}
+    "skunk": {0, 200, 0}
   }
 }
 
 player = require "src/player"
 props  = require "src/props"
+plants = require "src/plants"
+
 block  = props.block
 
 with level
@@ -36,5 +39,19 @@ with level
         a = block.make x, y, game.z
         game\spawn a
         world\add a, a.pos[1], a.pos[2], a.w, a.h
+      
+      when "skunk"
+        a = plants.make x, y, game.z, {
+          w: 8
+          h: 25
+          touchable: true
+          tags: {"pick"}
+          on_pick: =>
+            game.camera.r += util.randf -.5, .5
+
+            world\remove @
+            game\remove  @
+        }
+        game\spawn a
 
 level
