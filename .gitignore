@@ -1,4 +1,3 @@
-*.lua
 !bump.lua
-!shine
-!lib/shine
+!./lib/shine
+*.lua
