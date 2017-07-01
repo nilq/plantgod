@@ -27,7 +27,8 @@ make = function(x, y, z, name)
       [1] = x,
       [2] = y,
       [3] = z
-    }
+    },
+    name = name
   }
   block.w = 24
   block.h = 24
@@ -40,7 +41,7 @@ make = function(x, y, z, name)
     do
       local _with_0 = projection.graphics
       love.graphics.setColor(255, 255, 255)
-      _with_0.draw(fov, sprites.textures[name], {
+      _with_0.draw(fov, sprites.textures[self.name], {
         self.draw_pos[1],
         self.draw_pos[2],
         self.draw_pos[3] - 20
@@ -56,7 +57,7 @@ make = function(x, y, z, name)
     }
     do
       local _with_0 = projection.graphics
-      love.graphics.setColor(color[name])
+      love.graphics.setColor(color[self.name])
       _with_0.cube(fov, "fill", {
         self.draw_pos[1],
         self.draw_pos[2] + self.h,

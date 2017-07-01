@@ -3,10 +3,8 @@ make = (x, y, z, settings) ->
     pos: {
       [1]: x
       [2]: y
-      [3]: z
+      [3]: z - 5
     }
-
-    :settings
   }
 
   plant.tag      = {}
@@ -31,10 +29,11 @@ make = (x, y, z, settings) ->
       if c.normal.x ~= 0
         @dx = 0
 
-      if @seed
-        @grow!
+      if @seed and c.other.name == "dirt"
+        @grow settings
 
-      @settings\collide c if @settings.collide
+      if @settings
+        @settings\collide c if @settings.collide
 
       game\tag_check c.other.tags, c.other, @ if c.other.tags
       if c.other.settings
@@ -60,9 +59,9 @@ make = (x, y, z, settings) ->
         .square3d fov, "fill", @draw_pos, @w, @h
       else
         love.graphics.setColor 255, 255, 255
-        .draw fov, sprites.plants[@settings.name], @draw_pos, 0, 1.6, 1.6
+        .draw fov, sprites.plants[@settings.name], @draw_pos, 0, 1.5, 1.5
 
-  plant.grow = (settings=@settings) =>
+  plant.grow = (settings) =>
     unless settings.touchable
       world\remove @
     else
@@ -104,7 +103,7 @@ shrub = {
   tags: {"touch"}
   on_touch: (c) =>
     c.pos[2] -= 1
-    c.dy      = -15
+    c.dy      = -12
 }
 
 {

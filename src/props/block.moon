@@ -12,6 +12,7 @@ make = (x, y, z, name) ->
       [2]: y
       [3]: z
     }
+    :name
   }
 
   block.w = 24
@@ -26,7 +27,7 @@ make = (x, y, z, name) ->
 
     with projection.graphics
       love.graphics.setColor 255, 255, 255
-      .draw fov, sprites.textures[name], {@draw_pos[1], @draw_pos[2], @draw_pos[3] - 20}, 0, 3.1, 3.1
+      .draw fov, sprites.textures[@name], {@draw_pos[1], @draw_pos[2], @draw_pos[3] - 20}, 0, 3.1, 3.1
 
   block.drawb = =>
     @draw_pos = {
@@ -36,7 +37,7 @@ make = (x, y, z, name) ->
     }
 
     with projection.graphics
-      love.graphics.setColor color[name]
+      love.graphics.setColor color[@name]
       .cube fov, "fill", {@draw_pos[1], @draw_pos[2] + @h, @draw_pos[3] - @w}, @w, @h, 10
 
   block

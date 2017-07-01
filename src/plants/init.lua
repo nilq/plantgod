@@ -4,9 +4,8 @@ make = function(x, y, z, settings)
     pos = {
       [1] = x,
       [2] = y,
-      [3] = z
-    },
-    settings = settings
+      [3] = z - 5
+    }
   }
   plant.tag = { }
   plant.w = 4
@@ -32,11 +31,13 @@ make = function(x, y, z, settings)
       if c.normal.x ~= 0 then
         self.dx = 0
       end
-      if self.seed then
-        self:grow()
+      if self.seed and c.other.name == "dirt" then
+        self:grow(settings)
       end
-      if self.settings.collide then
-        self.settings:collide(c)
+      if self.settings then
+        if self.settings.collide then
+          self.settings:collide(c)
+        end
       end
       if c.other.tags then
         game:tag_check(c.other.tags, c.other, self)
@@ -68,15 +69,12 @@ make = function(x, y, z, settings)
         _with_0.square3d(fov, "fill", self.draw_pos, self.w, self.h)
       else
         love.graphics.setColor(255, 255, 255)
-        _with_0.draw(fov, sprites.plants[self.settings.name], self.draw_pos, 0, 1.6, 1.6)
+        _with_0.draw(fov, sprites.plants[self.settings.name], self.draw_pos, 0, 1.5, 1.5)
       end
       return _with_0
     end
   end
   plant.grow = function(self, settings)
-    if settings == nil then
-      settings = self.settings
-    end
     if not (settings.touchable) then
       world:remove(self)
     else
@@ -121,7 +119,7 @@ local shrub = {
   },
   on_touch = function(self, c)
     c.pos[2] = c.pos[2] - 1
-    c.dy = -15
+    c.dy = -12
   end
 }
 return {
