@@ -14,7 +14,7 @@ with love
     dt = 0
 
     update_time  = 0
-    target_delta = 1 / 120
+    target_delta = 1 / 70
 
     .math.setRandomSeed os.time! if .math
     .load!                       if .load
@@ -40,7 +40,7 @@ with love
         dt = .timer.getDelta!
       
       if update_time > target_delta
-        state\update update_time
+        state\update dt
         update_time = 0
       
       if .graphics and .graphics.isActive!

@@ -19,10 +19,20 @@ make = (x, y, z, settings) ->
   plant.seed     = true
   plant.dirx     = 1
 
+  plant.life    = 5
+  plant.touched = false
+
   plant.update = (dt) =>
-    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
+    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy, game.filter
+
+    if @seed and @touched
+      @life -= dt
+      if @life <= 0
+        game\remove @
+        world\remove @
 
     for c in *@collisions
+      @touched = true
       if c.normal.y ~= 0
         if c.normal.y == -1
           @grounded = true
@@ -36,6 +46,8 @@ make = (x, y, z, settings) ->
 
           if settings.adjustdir
             @dirx = -c.normal.x
+            @settings.dirx = @dirx if @settings
+
         @grow settings
 
       if @settings
@@ -63,7 +75,7 @@ make = (x, y, z, settings) ->
         }
       else
         @draw_pos = {
-          game.x + @pos[1] + (@settings.ox or 0) + sprites.plants[@settings.name]\getWidth!
+          game.x + @pos[1] + (@settings.ox or 0)
           game.y + @pos[2] + (@settings.oy or 0)
           @pos[3]
         }
@@ -85,10 +97,9 @@ make = (x, y, z, settings) ->
         .draw fov, sprite, @draw_pos, 0, @dirx * 1.5, 1.5, sprite\getWidth! / 2
 
   plant.grow = (settings) =>
-    unless settings.touchable
-      world\remove @
-    else
-      world\update @, @pos[1] - settings.w / 2, @pos[2] - settings.h - @h * 3, settings.w, settings.h
+    @touchable = settings.touchable or true
+
+    world\update @, @pos[1] - @dirx * (settings.w / 2), @pos[2] - settings.h - @h * 3, settings.w, settings.h
     
     for tag in *settings.tags
       @tag[#@tag + 1] = tag
@@ -135,18 +146,18 @@ berry = {
   name: "berry"
   w: 4
   h: 24
-  ox: -20
-  oy: 0
+  --ox: -20
+  --oy: 0
   touchable: true
   adjustdir: true
   flying:    true
   tags: {"grab"}
+  dirx: 0
   condition: (c) =>
-    print c.normal.x
     c.normal.x ~= 0
 
-  on_grab: (a) => 
-    a.attatched = -1
+  on_grab: (a) =>
+    a.attatched = -@dirx
 }
 
 {
