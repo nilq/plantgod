@@ -70,7 +70,7 @@ make = (slots, x, z) ->
     if key == "return"
       for i = 1, #game.players
         p = game.players[i]
-        
+
         v0 = ""
         for j = 1, #@slots
           v0 ..= @slots[j]

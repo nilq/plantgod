@@ -10,8 +10,8 @@ make = (x, y, z, settings) ->
   plant.tag      = {}
   plant.w        = 4
   plant.h        = 5
-  plant.frcx     = 0.001
-  plant.frcy     = 2
+  plant.frcx     = 18
+  plant.frcy     = 1
   plant.dx       = 0
   plant.dy       = 0
   plant.gravity  = 30
@@ -58,11 +58,11 @@ make = (x, y, z, settings) ->
         game\tag_check c.other.settings.tags, c.other, @ if c.other.settings.tags
 
     if @grounded
-      @dx -= (@dx / @frcx) * dt
+      @dx -= @dx * @frcx * dt unless 0.01 > math.abs @dx - @frcx
     else
-      @dx -= (@dx / @frcy) * dt
+      @dx -= @dx * @frcy * dt unless 0.01 > math.abs @dx - @frcy
 
-    @dy -= (@dy / @frcy) * dt
+    @dy -= @dy * @frcy * dt unless 0.01 > math.abs @dy - @frcy
     @dy += @gravity * dt
 
   plant.draw = =>

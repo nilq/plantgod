@@ -13,8 +13,8 @@ make = (x, y, z) ->
 
     .acc      = 20
     .stdacc   = acc
-    .frcx     = 0.12
-    .frcy     = 2
+    .frcx     = 8
+    .frcy     = 1
     .dx       = 0
     .dy       = 0
     .grounded = false
@@ -76,11 +76,11 @@ make = (x, y, z) ->
           @attatched = 0
 
     if @grounded
-      @dx -= (@dx / @frcx) * dt
+      @dx -= @dx * @frcx * dt unless 0.01 > math.abs @dx - @frcx
     else
-      @dx -= (@dx / @frcy) * dt
+      @dx -= @dx * @frcy * dt unless 0.01 > math.abs @dx - @frcy
 
-    @dy -= (@dy / @frcy) * dt
+    @dy -= @dy * @frcy * dt unless 0.01 > math.abs @dy - @frcy
 
     @dy += @gravity * dt unless @attatched  ~= 0
 
@@ -98,7 +98,7 @@ make = (x, y, z) ->
   player.camera_follow = (t) =>
     real_pos = @pos
     with game
-      .x = util.lerp .x, -real_pos[1] + love.graphics.getWidth! / 4, t
+      .x = util.lerp .x, -real_pos[1] + love.graphics.getWidth! / 5, t
       .y = util.lerp .y, -real_pos[2] + love.graphics.getHeight! / 4, t / 2
 
   player.draw = =>
