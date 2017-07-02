@@ -4,6 +4,7 @@ with love.graphics
       dirt:  .newImage "res/Textures/Grasslands_Dirt.png"
       stone: .newImage "res/Textures/Grasslands_Stone.png"
       sand:  .newImage "res/Textures/Sand.png"
+      grass: .newImage "res/Textures/Grasslands_Grass.png"
     }
 
     plants: {

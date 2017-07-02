@@ -22,13 +22,14 @@ make = (x, y, z) ->
     .jump     = 8
     .jumped   = false
     .airmul   = 0.75
+    .dxmul    = 1
 
   player.update = (dt) =>
     -- Clear flags
     @grounded = false
-    @fast = false
+    @fast     = false
 
-    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
+    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx * @dxmul, @pos[2] + @dy
 
     -- Resolve collisions
     for c in *@collisions

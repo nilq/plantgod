@@ -29,7 +29,7 @@ make = (x, y, z, settings) ->
       if c.normal.x ~= 0
         @dx = 0
 
-      if @seed and c.other.name == "dirt"
+      if @seed and (c.other.name == "dirt" or c.other.name == "grass")
         @grow settings
 
       if @settings
@@ -88,8 +88,8 @@ skunk = {
   h: 24
   touchable: true
   tags: {"pick"}
-  on_pick: =>
-    game.camera.r += util.randf -.5, .5
+  on_pick: (a) =>
+    a.dxmul = -1
 
     world\remove @
     game\remove  @
