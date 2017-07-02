@@ -61,6 +61,12 @@ make = (slots, x, z) ->
     love.graphics.pop!
 
   mixer.press = (key) =>
+    if key == "backspace"
+      for i = #@slots, 1, -1
+        unless @slots[i] == 0
+          @slots[i] = 0
+          break
+
     if key == "return"
       for i = 1, #game.players
         p = game.players[i]
