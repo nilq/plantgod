@@ -15,17 +15,17 @@ make = (x, y, z) ->
       run: anim.make sprites.anims.run, 2, true
     }
 
-    .acc      = 20
+    .acc      = 26
     .stdacc   = acc
-    .frcx     = 7
-    .frcy     = 5
+    .frcx     = 3.5
+    .frcy     = 0.5
     .dx       = 0
     .dy       = 0
     .grounded = false
-    .gravity  = 25
-    .jump     = 8
+    .gravity  = 12.5
+    .jump     = 10
     .jumped   = false
-    .airmul   = 0.75
+    .airmul   = 0.45
     .dxmul    = 1
     .attatched = 0
 
