@@ -26,8 +26,8 @@ make = (x, y, z, name) ->
     }
 
     with projection.graphics
-        love.graphics.setColor 255, 255, 255
-        .draw fov, sprites.textures[@name], {@draw_pos[1], @draw_pos[2], @draw_pos[3] - 20}, 0, 1.55, 1.55
+      love.graphics.setColor 255, 255, 255
+      .draw fov, sprites.textures[@name], {@draw_pos[1], @draw_pos[2], @draw_pos[3] - 20}, 0, 1.55, 1.55
 
   block.drawb = =>
     @draw_pos = {
