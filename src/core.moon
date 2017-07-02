@@ -4,6 +4,8 @@ mixer  = require "src/player/mixer"
 level  = require "src/level"
 camera = require "src/camera"
 
+export anim = require "src/animation"
+
 game.filter = (item, other) ->
   if other.touchable ~= nil
     unless other.touchable

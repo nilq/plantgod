@@ -1,5 +1,5 @@
 with love.graphics
-  return {
+  sprites = {
     textures: {
       dirt:  .newImage "res/Textures/Grasslands_Dirt.png"
       stone: .newImage "res/Textures/Grasslands_Stone.png"
@@ -21,3 +21,12 @@ with love.graphics
       blank: .newImage "res/Runes/Blank.png"
     }
   }
+
+  sprites.anims = {
+    run: {}
+  }
+
+  for i = 0, 10
+    sprites.anims.run[i] = .newImage "res/Run/Run #{i}.png"
+
+  return sprites

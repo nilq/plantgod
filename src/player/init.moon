@@ -11,6 +11,10 @@ make = (x, y, z) ->
     .w = 24
     .h = 24
 
+    .animations = {
+      run: anim.make sprites.anims.run, 2, true
+    }
+
     .acc      = 20
     .stdacc   = acc
     .frcx     = 8
