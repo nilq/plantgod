@@ -23,7 +23,7 @@ make = (x, y, z) ->
     .state    = 1
     .dirx     = 1
 
-    .acc      = 13
+    .acc      = 26
     .stdacc   = acc
     .frcx     = 7
     .frcy     = 1
