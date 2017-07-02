@@ -11,17 +11,17 @@ make = (x, y, z) ->
     .w = 24
     .h = 24
 
-    .acc      = 20
+    .acc      = 13
     .stdacc   = acc
     .frcx     = 7
-    .frcy     = 5
+    .frcy     = 1
     .dx       = 0
     .dy       = 0
     .grounded = false
     .gravity  = 25
-    .jump     = 8
+    .jump     = 5
     .jumped   = false
-    .airmul   = 0.75
+    .airmul   = 0.45
     .dxmul    = 1
     .attatched = 0
 

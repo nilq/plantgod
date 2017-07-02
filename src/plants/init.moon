@@ -161,7 +161,10 @@ shrub = {
   tags: {"touch"}
   on_touch: (c) =>
     c.pos[2] -= 1
-    c.dy      = -12
+    if c.dy > -6
+      c.dy = -6
+    else
+      c.dy = c.dy * 0.9
 }
 
 berry = {
