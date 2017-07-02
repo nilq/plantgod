@@ -4,6 +4,12 @@ mixer  = require "src/player/mixer"
 level  = require "src/level"
 camera = require "src/camera"
 
+game.filter = (item, other) ->
+  if other.touchable ~= nil
+    unless other.touchable
+      return "cross"
+  "slide"
+
 game.load = =>
   @x       = 0
   @y       = 0

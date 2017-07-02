@@ -22,12 +22,15 @@ make = (x, y, z) ->
     .jump     = 8
     .jumped   = false
     .airmul   = 0.75
+    .dxmul    = 1
     .attatched = 0
 
   player.update = (dt) =>
     @grounded = false
 
-    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
+    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx * @dxmul, @pos[2] + @dy, game.filter
+
+    @dxmul = util.lerp @dxmul, 1, dt / 10
 
     -- Resolve collisions
     for c in *@collisions

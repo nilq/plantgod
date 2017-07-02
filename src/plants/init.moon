@@ -17,11 +17,22 @@ make = (x, y, z, settings) ->
   plant.gravity  = 30
   plant.grounded = false
   plant.seed     = true
+  plant.dirx     = nil
+
+  plant.life    = 5
+  plant.touched = false
 
   plant.update = (dt) =>
-    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
+    @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy, game.filter
+
+    if @seed and @touched
+      @life -= dt
+      if @life <= 0
+        game\remove @
+        world\remove @
 
     for c in *@collisions
+      @touched = true
       if c.normal.y ~= 0
         if c.normal.y == -1
           @grounded = true
@@ -29,7 +40,14 @@ make = (x, y, z, settings) ->
       if c.normal.x ~= 0
         @dx = 0
 
-      if @seed and c.other.name == "dirt"
+      if @seed and (c.other.name == "dirt" or c.other.name == "grass")
+        if settings.condition
+          continue unless settings\condition c
+
+          if settings.adjustdir
+            @dirx = -c.normal.x
+            @settings.dirx = @dirx if @settings
+
         @grow settings
 
       if @settings
@@ -49,11 +67,33 @@ make = (x, y, z, settings) ->
 
   plant.draw = =>
     if @settings
-      @draw_pos = {
-        game.x + @pos[1] + (@settings.ox or 0)
-        game.y + @pos[2] + (@settings.oy or 0)
-        @pos[3]
-      }
+      if @settings.draw
+        @settings\draw @, @real_draw
+      else
+        @real_draw!
+    else
+      @real_draw!
+
+  plant.real_draw = =>
+    if @settings
+      if @dirx == -1
+        @draw_pos = {
+          game.x + @pos[1] + (@settings.ox or 0) + sprites.plants[@settings.name]\getWidth! / 2
+          game.y + @pos[2] + (@settings.oy or 0)
+          @pos[3]
+        }
+      elseif @dirx == 1
+        @draw_pos = {
+          game.x + @pos[1] + (@settings.ox or 0)
+          game.y + @pos[2] + (@settings.oy or 0)
+          @pos[3]
+        }
+      else
+        @draw_pos = {
+          game.x + @pos[1] + (@settings.ox or 0) + sprites.plants[@settings.name]\getWidth! / 2
+          game.y + @pos[2] + (@settings.oy or 0)
+          @pos[3]
+        }
     else
       @draw_pos = {
         game.x + @pos[1]
@@ -66,22 +106,25 @@ make = (x, y, z, settings) ->
         love.graphics.setColor 100, 255, 100
         .square3d fov, "fill", @draw_pos, @w, @h
       else
+        sprite = sprites.plants[@settings.name]
+
         love.graphics.setColor 255, 255, 255
-        .draw fov, sprites.plants[@settings.name], @draw_pos, 0, 1.5, 1.5
+        .draw fov, sprite, @draw_pos, 0, (@dirx or 1) * 1.5, 1.5, sprite\getWidth! / 2
 
   plant.grow = (settings) =>
-    unless settings.touchable
-      world\remove @
-    else
-      world\update @, @pos[1] - settings.w / 2, @pos[2] - settings.h - @h * 3, settings.w, settings.h
+    @touchable = settings.touchable or true
+
+    world\update @, @pos[1] - (@dirx or 1) * (settings.w / 2), @pos[2] - settings.h - @h * 3, settings.w, settings.h
     
     for tag in *settings.tags
       @tag[#@tag + 1] = tag
 
     @settings = settings
 
-    @w    = settings.w
-    @h    = settings.h
+    @gravity = 0 if @settings.flying
+
+    @w    = @settings.w
+    @h    = @settings.h
     @dx   = 0
     @dy   = 0
     @seed = false
@@ -96,8 +139,15 @@ skunk = {
   h: 24
   touchable: true
   tags: {"pick"}
-  on_pick: =>
-    game.camera.r += util.randf -.5, .5
+  
+  -- draw nice stuff
+  effect: shine.godsray!
+  draw: (plant_self, real_draw_function) =>
+    @effect\draw ->
+      real_draw_function plant_self
+
+  on_pick: (a) =>
+    a.dxmul = -1
 
     world\remove @
     game\remove  @
@@ -118,12 +168,16 @@ berry = {
   name: "berry"
   w: 4
   h: 24
-  ox: -20
-  oy: 0
   touchable: true
+  adjustdir: true
+  flying:    true
   tags: {"grab"}
-  on_grab: (a) => 
-    a.attatched = -1
+  dirx: 0
+  condition: (c) =>
+    c.normal.x ~= 0
+
+  on_grab: (a) =>
+    a.attatched = -@dirx
 }
 
 {

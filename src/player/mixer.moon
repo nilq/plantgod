@@ -17,7 +17,7 @@ make = (slots, x, z) ->
     }
 
     runes: {
-      [0]: sprites.plants.skunk
+      [0]: sprites.runes.blank
       [-1]: sprites.runes.l_rune
       [1]: sprites.runes.r_rune
       [-2]: sprites.runes.d_rune
@@ -26,6 +26,8 @@ make = (slots, x, z) ->
   }
 
   with mixer
+    .s = 48
+
     .slots = {}
     for i = 1, slots
       .slots[#.slots + 1] = 0
@@ -47,14 +49,14 @@ make = (slots, x, z) ->
         else
           love.graphics.setColor 255, 255, 255
 
-        x = i * (32 + 4) - 27
-        y = love.graphics.getHeight! / 2.5 - 40
+        x = i * 4 + i * @s - 27
+        y = love.graphics.getHeight! / 2.5 - 40 / (32 / @s)
 
-        love.graphics.rectangle "fill", x, y, 32, 32
-        love.graphics.draw @runes[@slots[i]], x, y, 0, 1, 1, -4, -4
+        love.graphics.rectangle "fill", x, y, @s, @s
+        love.graphics.draw @runes[@slots[i]], x, y, 0, @s/32, @s/32, -4, -4
 
         love.graphics.setColor 200, 200, 200
-        love.graphics.rectangle "line", x, y, 32, 32
+        love.graphics.rectangle "line", x, y, @s, @s
 
     love.graphics.pop!
 
