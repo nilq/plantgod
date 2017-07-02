@@ -11,4 +11,11 @@ with love.graphics
       shrub: .newImage "res/Plants/BouncyShrub.png"
       berry: .newImage "res/Plants/WallBerry.png"
     }
+
+    runes: {
+      l_rune: .newImage "res/Runes/Left.png"
+      r_rune: .newImage "res/Runes/Right.png"
+      u_rune: .newImage "res/Runes/Up.png"
+      d_rune: .newImage "res/Runes/Down.png"
+    }
   }

@@ -40,7 +40,7 @@ with love
         dt = .timer.getDelta!
 
       if update_time > target_delta
-        state\update update_time
+        state\update dt
         update_time -= target_delta
       
       if .graphics and .graphics.isActive!

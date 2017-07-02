@@ -1,4 +1,5 @@
 plants = require "src/plants"
+sprites = require "src/sprites"
 
 make = (slots, x, z) ->
   mixer = {
@@ -13,6 +14,14 @@ make = (slots, x, z) ->
       skunk: "-1, 2, -1, -2"
       shrub: "-1, -1, -1, -1"
       berry: "1, 1, -1, -1"
+    }
+
+    runes: {
+      [0]: sprites.plants.skunk
+      [-1]: sprites.runes.l_rune
+      [1]: sprites.runes.r_rune
+      [-2]: sprites.runes.d_rune
+      [2]: sprites.runes.u_rune
     }
   }
 
@@ -38,10 +47,11 @@ make = (slots, x, z) ->
         else
           love.graphics.setColor 255, 255, 255
 
-        x = i * 4 + i * 32 - 27
+        x = i * (32 + 4) - 27
         y = love.graphics.getHeight! / 2.5 - 40
 
         love.graphics.rectangle "fill", x, y, 32, 32
+        love.graphics.draw @runes[@slots[i]], x, y, 0, 1, 1, -4, -4
 
         love.graphics.setColor 200, 200, 200
         love.graphics.rectangle "line", x, y, 32, 32
@@ -53,12 +63,11 @@ make = (slots, x, z) ->
       for i = 1, #game.players
         p = game.players[i]
         
+        v0 = ""
+        for j = 1, #@slots
+          v0 ..= @slots[j]
+          v0 ..= ", " unless j == #@slots
         for k, v in pairs @combinations
-          v0 = ""
-          for j = 1, #@slots
-            v0 ..= @slots[j]
-            v0 ..= ", " unless j == #@slots
-
           if v0 == v
             setting = plants.settings[k]
 
