@@ -12,7 +12,7 @@ make = (slots, x, z) ->
     combinations: {
       skunk: "-1, 2, -1, -2"
       shrub: "-1, -1, -1, -1"
-      grass: "1, -1, 1, -1"
+      berry: "1, 1, -1, -1"
     }
   }
 

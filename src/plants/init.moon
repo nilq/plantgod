@@ -48,11 +48,19 @@ make = (x, y, z, settings) ->
     @dy += @gravity * dt
 
   plant.draw = =>
-    @draw_pos = {
-      game.x + @pos[1]
-      game.y + @pos[2]
-      @pos[3]
-    }
+    if @settings
+      @draw_pos = {
+        game.x + @pos[1] + (@settings.ox or 0)
+        game.y + @pos[2] + (@settings.oy or 0)
+        @pos[3]
+      }
+    else
+      @draw_pos = {
+        game.x + @pos[1]
+        game.y + @pos[2]
+        @pos[3]
+      }
+
     with projection.graphics
       if @seed
         love.graphics.setColor 100, 255, 100
@@ -106,13 +114,16 @@ shrub = {
     c.dy      = -12
 }
 
-grass = {
-  name: "grass"
-  w: 24
-  h: 6
-  tags: {"walk"}
-  on_walk: (a) => 
-    a\make_fast!  if a.make_fast
+berry = {
+  name: "berry"
+  w: 4
+  h: 24
+  ox: -20
+  oy: 0
+  touchable: true
+  tags: {"grab"}
+  on_grab: (a) => 
+    a.attatched = -1
 }
 
 {
@@ -120,6 +131,6 @@ grass = {
   settings: {
     :skunk
     :shrub
-    :grass
+    :berry
   }
 }

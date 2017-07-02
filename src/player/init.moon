@@ -23,11 +23,10 @@ make = (x, y, z) ->
     .jumped   = false
     .airmul   = 0.75
     .dxmul    = 1
+    .attatched = 0
 
   player.update = (dt) =>
-    -- Clear flags
     @grounded = false
-    @fast     = false
 
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx * @dxmul, @pos[2] + @dy
 
@@ -39,31 +38,40 @@ make = (x, y, z) ->
         @dy = 0
       if c.normal.x ~= 0
         @dx = 0
-      
-      if fast
-        acc = stdacc * 2
-      else
-        acc = stdacc
 
       game\tag_check c.other.tags, c.other, @ if c.other.tags
       if c.other.settings
         game\tag_check c.other.settings.tags, c.other, @ if c.other.settings.tags
 
     with love.keyboard
-      if .isDown "d"
-        if @grounded
-          @dx += @acc * dt
-        else
-          @dx += @airmul * @acc * dt
-      if .isDown "a"
-        if @grounded
-          @dx -= @acc * dt
-        else
-          @dx -= @airmul * @acc * dt
-      
-      if .isDown "space"
-        unless @grounded
-          @dy -= dt * @gravity / 40
+      if @attatched == 0
+        if .isDown "d"
+          if @grounded
+            @dx += @acc * dt
+          else
+            @dx += @airmul * @acc * dt
+        if .isDown "a"
+          if @grounded
+            @dx -= @acc * dt
+          else
+            @dx -= @airmul * @acc * dt
+        
+        if .isDown "space"
+          unless @grounded
+            @dy -= dt * @gravity / 40
+      else
+        @dx = 0
+        @dy = 0
+        if (.isDown "d") and @attatched == 1
+          @dx = 6
+          @attatched = 0
+        if (.isDown "a") and @attatched == -1
+          @dx = -6
+          @attatched = 0
+        if .isDown "space"
+          @dx = 6 * @attatched
+          @dy = -7
+          @attatched = 0
 
     if @grounded
       @dx -= (@dx / @frcx) * dt
@@ -72,7 +80,7 @@ make = (x, y, z) ->
 
     @dy -= (@dy / @frcy) * dt
 
-    @dy += @gravity * dt
+    @dy += @gravity * dt unless @attatched  ~= 0
 
     @jumped = false if @dy >= 0
 
@@ -114,9 +122,6 @@ make = (x, y, z) ->
     if @jumped
       if key == "space" 
         @dy = 0
-  
-  player.makefast = =>
-    @fast = true
 
   player
 

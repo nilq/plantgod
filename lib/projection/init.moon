@@ -46,11 +46,11 @@ print = (fov, msg, p1) ->
     .print msg, pn1[1] * s1, pn1[2] * s1, 0, s1, s1
 
 -- drawable on point
-draw = (fov, img, p1, r=0, sx=1, sy=1) ->
+draw = (fov, img, p1, r=0, sx=1, sy=1, ox=0, oy=0) ->
   pn1, s1 = projectn 2, fov, p1
 
   with love.graphics
-    .draw img, pn1[1] * s1, pn1[2] * s1, r, s1 * sx, s1 * sy
+    .draw img, pn1[1] * s1, pn1[2] * s1, r, s1 * sx, s1 * sy, ox, oy
 
 -- triangle draws a 2d triangle between given arbitray dimensional points
 -- number -> string -> table -> table -> table -> nil
