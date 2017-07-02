@@ -14,7 +14,7 @@ with love
     dt = 0
 
     update_time  = 0
-    target_delta = 1 / 70
+    target_delta = 1 / 1200
 
     .math.setRandomSeed os.time! if .math
     .load!                       if .load

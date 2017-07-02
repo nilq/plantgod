@@ -17,7 +17,7 @@ make = (x, y, z, settings) ->
   plant.gravity  = 30
   plant.grounded = false
   plant.seed     = true
-  plant.dirx     = 1
+  plant.dirx     = nil
 
   plant.life    = 5
   plant.touched = false
@@ -65,7 +65,16 @@ make = (x, y, z, settings) ->
     @dy -= (@dy / @frcy) * dt
     @dy += @gravity * dt
 
-  plant.draw = =>    
+  plant.draw = =>
+    if @settings
+      if @settings.draw
+        @settings\draw @, @real_draw
+      else
+        @real_draw!
+    else
+      @real_draw!
+
+  plant.real_draw = =>
     if @settings
       if @dirx == -1
         @draw_pos = {
@@ -73,9 +82,15 @@ make = (x, y, z, settings) ->
           game.y + @pos[2] + (@settings.oy or 0)
           @pos[3]
         }
-      else
+      elseif @dirx == 1
         @draw_pos = {
           game.x + @pos[1] + (@settings.ox or 0)
+          game.y + @pos[2] + (@settings.oy or 0)
+          @pos[3]
+        }
+      else
+        @draw_pos = {
+          game.x + @pos[1] + (@settings.ox or 0) + sprites.plants[@settings.name]\getWidth! / 2
           game.y + @pos[2] + (@settings.oy or 0)
           @pos[3]
         }
@@ -94,12 +109,12 @@ make = (x, y, z, settings) ->
         sprite = sprites.plants[@settings.name]
 
         love.graphics.setColor 255, 255, 255
-        .draw fov, sprite, @draw_pos, 0, @dirx * 1.5, 1.5, sprite\getWidth! / 2
+        .draw fov, sprite, @draw_pos, 0, (@dirx or 1) * 1.5, 1.5, sprite\getWidth! / 2
 
   plant.grow = (settings) =>
     @touchable = settings.touchable or true
 
-    world\update @, @pos[1] - @dirx * (settings.w / 2), @pos[2] - settings.h - @h * 3, settings.w, settings.h
+    world\update @, @pos[1] - (@dirx or 1) * (settings.w / 2), @pos[2] - settings.h - @h * 3, settings.w, settings.h
     
     for tag in *settings.tags
       @tag[#@tag + 1] = tag
@@ -124,6 +139,13 @@ skunk = {
   h: 24
   touchable: true
   tags: {"pick"}
+  
+  -- draw nice stuff
+  effect: shine.godsray!
+  draw: (plant_self, real_draw_function) =>
+    @effect\draw ->
+      real_draw_function plant_self
+
   on_pick: (a) =>
     a.dxmul = -1
 
@@ -146,8 +168,6 @@ berry = {
   name: "berry"
   w: 4
   h: 24
-  --ox: -20
-  --oy: 0
   touchable: true
   adjustdir: true
   flying:    true

@@ -30,7 +30,7 @@ make = (x, y, z) ->
 
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx * @dxmul, @pos[2] + @dy, game.filter
 
-    @dxmul = util.lerp @dxmul, 1, dt / 20
+    @dxmul = util.lerp @dxmul, 1, dt / 10
 
     -- Resolve collisions
     for c in *@collisions
