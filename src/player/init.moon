@@ -11,9 +11,15 @@ make = (x, y, z) ->
     .w = 24
     .h = 24
 
-    .animations = {
-      run: anim.make sprites.anims.run, 2, true
+    .anims = {
+      anim.make sprites.anims.run, 8, true
+      anim.make sprites.anims.jumpup, 8, true
+      anim.make sprites.anims.jumpdown, 8, true
+      anim.make sprites.anims.idle, 1, true
     }
+
+    .state    = 1
+    .dirx     = 1
 
     .acc      = 26
     .stdacc   = acc
@@ -31,6 +37,9 @@ make = (x, y, z) ->
 
   player.update = (dt) =>
     @grounded = false
+
+    @dirx = util.sign @dx unless @dx == 0
+    @anims[@state]\update dt
 
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx * @dxmul, @pos[2] + @dy, game.filter
 
@@ -118,17 +127,32 @@ make = (x, y, z) ->
       .y = util.lerp .y, -real_pos[2] + love.graphics.getHeight! / 4, t / 2
 
   player.draw = =>
-    @draw_pos = {
-      game.x + @pos[1]
-      game.y + @pos[2]
-      @pos[3]
-    }
-    with projection.graphics
-      love.graphics.setColor 200, 255, 200
-      .square3d fov, "fill", @draw_pos, @w, @h
+    if @grounded
+      @state = 4
+      if 1 < math.abs @dx
+        @state = 1
+    else
+      @state = 2
+      if @dy > 0
+        @state = 3
 
-      love.graphics.setColor 150, 150, 150
-      .square3d fov, "line", @draw_pos, @w, @h
+    sprite = @anims[@state]\get_current!
+    if @dirx > 0
+      @draw_pos = {
+        game.x + @pos[1] + sprite\getWidth! / 2
+        game.y + @pos[2] + sprite\getWidth! / 2
+        @pos[3]
+      }
+    else
+      @draw_pos = {
+        game.x + @pos[1] + sprite\getWidth! / 2
+        game.y + @pos[2] + sprite\getWidth! / 2
+        @pos[3]
+      }
+
+    with projection.graphics
+      love.graphics.setColor 255, 255, 255
+      .draw fov, sprite, {@draw_pos[1], @draw_pos[2], @draw_pos[3]}, 0, @dirx * 2, 2, sprite\getWidth! / 2, sprite\getHeight! / 2
 
   player.press = (key) =>
     if @grounded

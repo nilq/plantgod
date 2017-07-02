@@ -9,12 +9,12 @@ make = (frames, s=1, loop=false, f=util.lerp, current=0) ->
 
   with anim
     .update = (dt) =>
-      @current = math.floor @f @current, #@frames, dt * @s
-      if @current - #@frames == 0
+      @current = @.f @current, #@frames, dt * @s
+      if (math.floor @current + 0.5) == #@frames
         @current = 0 if @loop
 
-    .current = =>
-      @frames @current
+    .get_current = =>
+      @frames[math.floor @current]
 
   anim
 
