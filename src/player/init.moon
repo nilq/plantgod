@@ -1,4 +1,4 @@
---sound_player = require "src/player/sound"
+sound_player = require "src/player/sound"
 
 make = (x, y, z) ->
   player = {
@@ -76,6 +76,7 @@ make = (x, y, z) ->
         if .isDown "space"
           unless @grounded
             @dy -= dt * @gravity / 40
+            sound_player\play_hop!
       else
         @dx = 0
         @dy = 0
@@ -88,6 +89,7 @@ make = (x, y, z) ->
         if .isDown "space"
           @dx = 6 * @attatched
           @dy = -7
+          sound_player\play_hop!
           @attatched = 0
     with math 
       dirx = util.sign @dx

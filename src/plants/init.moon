@@ -1,3 +1,4 @@
+sound_player = require "src/player/sound"
 make = (x, y, z, settings) ->
   plant = {
     pos: {
@@ -160,6 +161,7 @@ shrub = {
   touchable: true
   tags: {"touch"}
   on_touch: (c) =>
+    sound_player\play_bop!
     c.pos[2] -= 1
     if c.dy > -6
       c.dy = -6
