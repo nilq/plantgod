@@ -4,6 +4,8 @@ level = {
     "dirt":  {0, 0, 0}
     "stone": {81, 81, 81}
     "god":   {255, 255, 0}
+    "sand":  {255, 128, 0}
+    "bark":  {128, 128, 0}
     "skunk": {0, 200, 0}
   }
 }
@@ -42,7 +44,17 @@ with level
         game\spawn_back a
         world\add a, a.pos[1], a.pos[2], a.w, a.h
 
+      when "bark"
+        a = block.make x, y, game.z, k
+        game\spawn_back a
+        world\add a, a.pos[1], a.pos[2], a.w, a.h
+
       when "stone"
+        a = block.make x, y, game.z, k
+        game\spawn_back a
+        world\add a, a.pos[1], a.pos[2], a.w, a.h
+
+      when "sand"
         a = block.make x, y, game.z, k
         game\spawn_back a
         world\add a, a.pos[1], a.pos[2], a.w, a.h

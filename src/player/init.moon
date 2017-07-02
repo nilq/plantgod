@@ -1,3 +1,5 @@
+--sound_player = require "src/player/sound"
+
 make = (x, y, z) ->
   player = {
     pos: {

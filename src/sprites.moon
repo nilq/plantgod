@@ -2,6 +2,7 @@ with love.graphics
   return {
     textures: {
       dirt:  .newImage "res/Textures/Grasslands_Dirt.png"
+      bark:  .newImage "res/Textures/Bark.png"
       stone: .newImage "res/Textures/Grasslands_Stone.png"
       sand:  .newImage "res/Textures/Sand.png"
       grass: .newImage "res/Textures/Grasslands_Grass.png"
