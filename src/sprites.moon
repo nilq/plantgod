@@ -24,9 +24,21 @@ with love.graphics
 
   sprites.anims = {
     run: {}
+    jumpup: {}
+    jumpdown: {}
+    idle: {}
   }
 
   for i = 0, 10
     sprites.anims.run[i] = .newImage "res/Run/Run #{i}.png"
+
+  for i = 0, 3
+    sprites.anims.jumpup[i] = .newImage "res/Jump-Up/Jump-Up #{i}.png"
+
+  for i = 0, 3
+    sprites.anims.jumpdown[i] = .newImage "res/Jump-Down/Jump-Down #{i}.png"
+
+  for i = 0, 7
+    sprites.anims.idle[i] = .newImage "res/Idle/Idle #{i}.png"
 
   return sprites
