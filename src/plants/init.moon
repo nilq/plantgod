@@ -17,6 +17,7 @@ make = (x, y, z, settings) ->
   plant.gravity  = 30
   plant.grounded = false
   plant.seed     = true
+  plant.dirx     = 1
 
   plant.update = (dt) =>
     @pos[1], @pos[2], @collisions = world\move @, @pos[1] + @dx, @pos[2] + @dy
@@ -30,6 +31,11 @@ make = (x, y, z, settings) ->
         @dx = 0
 
       if @seed and (c.other.name == "dirt" or c.other.name == "grass")
+        if settings.condition
+          continue unless settings\condition c
+
+          if settings.adjustdir
+            @dirx = -c.normal.x
         @grow settings
 
       if @settings
@@ -47,13 +53,20 @@ make = (x, y, z, settings) ->
     @dy -= (@dy / @frcy) * dt
     @dy += @gravity * dt
 
-  plant.draw = =>
+  plant.draw = =>    
     if @settings
-      @draw_pos = {
-        game.x + @pos[1] + (@settings.ox or 0)
-        game.y + @pos[2] + (@settings.oy or 0)
-        @pos[3]
-      }
+      if @dirx == -1
+        @draw_pos = {
+          game.x + @pos[1] + (@settings.ox or 0) + sprites.plants[@settings.name]\getWidth! / 2
+          game.y + @pos[2] + (@settings.oy or 0)
+          @pos[3]
+        }
+      else
+        @draw_pos = {
+          game.x + @pos[1] + (@settings.ox or 0) + sprites.plants[@settings.name]\getWidth!
+          game.y + @pos[2] + (@settings.oy or 0)
+          @pos[3]
+        }
     else
       @draw_pos = {
         game.x + @pos[1]
@@ -66,8 +79,10 @@ make = (x, y, z, settings) ->
         love.graphics.setColor 100, 255, 100
         .square3d fov, "fill", @draw_pos, @w, @h
       else
+        sprite = sprites.plants[@settings.name]
+
         love.graphics.setColor 255, 255, 255
-        .draw fov, sprites.plants[@settings.name], @draw_pos, 0, 1.5, 1.5
+        .draw fov, sprite, @draw_pos, 0, @dirx * 1.5, 1.5, sprite\getWidth! / 2
 
   plant.grow = (settings) =>
     unless settings.touchable
@@ -80,8 +95,10 @@ make = (x, y, z, settings) ->
 
     @settings = settings
 
-    @w    = settings.w
-    @h    = settings.h
+    @gravity = 0 if @settings.flying
+
+    @w    = @settings.w
+    @h    = @settings.h
     @dx   = 0
     @dy   = 0
     @seed = false
@@ -121,7 +138,13 @@ berry = {
   ox: -20
   oy: 0
   touchable: true
+  adjustdir: true
+  flying:    true
   tags: {"grab"}
+  condition: (c) =>
+    print c.normal.x
+    c.normal.x ~= 0
+
   on_grab: (a) => 
     a.attatched = -1
 }
