@@ -41,7 +41,6 @@ with love
 
       if update_time > target_delta
         state\update dt
-        update_time -= target_delta
       
       if .graphics and .graphics.isActive!
         .graphics.clear .graphics.getBackgroundColor!

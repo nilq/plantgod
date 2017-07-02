@@ -13,8 +13,8 @@ make = (x, y, z) ->
 
     .acc      = 20
     .stdacc   = acc
-    .frcx     = 8
-    .frcy     = 1
+    .frcx     = 7
+    .frcy     = 5
     .dx       = 0
     .dy       = 0
     .grounded = false
@@ -74,15 +74,27 @@ make = (x, y, z) ->
           @dx = 6 * @attatched
           @dy = -7
           @attatched = 0
+    with math 
+      dirx = util.sign @dx
+      diry = util.sign @dy
+      if @grounded
+        if 0.01 < .abs @dx
+          @dx += (.abs @dx) * @frcx * -dirx * dt 
+        else
+          @dx = 0
+      else
+        if 0.01 < .abs @dx
+          @dx += (.abs @dx) * @frcy * -dirx * dt 
+        else
+          @dx = 0
 
-    if @grounded
-      @dx -= @dx * @frcx * dt unless 0.01 > math.abs @dx - @frcx
-    else
-      @dx -= @dx * @frcy * dt unless 0.01 > math.abs @dx - @frcy
 
-    @dy -= @dy * @frcy * dt unless 0.01 > math.abs @dy - @frcy
+      if 0.01 < .abs @dy
+        @dy += (.abs @dy) * @frcy * -diry * dt
+      else
+        @dy = 0
 
-    @dy += @gravity * dt unless @attatched  ~= 0
+      @dy += @gravity * dt unless @attatched  ~= 0
 
     @jumped = false if @dy >= 0
 
